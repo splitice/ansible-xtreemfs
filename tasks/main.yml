@@ -1,35 +1,7 @@
 ---
 # tasks file for ansible-xfreemfs-client
 
-- name: selinux permissive
-  selinux: policy=targeted state=permissive
-
-- name: firewalld stopped
-  service: name=firewalld state=stopped enabled=no
-
-- name: install the xfreemfs repo
-  get_url: url=http://download.opensuse.org/repositories/home:/xtreemfs/CentOS_7/home:xtreemfs.repo dest=/etc/yum.repos.d
-
-- name: install xfreemfs-server
-  yum: name=xtreemfs-server state=present
-  when: xtreemfs_role == "server"
-
-- name: start and enable xtreemfs-dir
-  service: name=xtreemfs-dir state=started enabled=yes
-  when: xtreemfs_role == "server"
-
-- name: start and enable xtreemfs-mrc
-  service: name=xtreemfs-mrc state=started enabled=yes
-  when: xtreemfs_role == "server"
-
-- name: start and enable xtreemfs-osd
-  service: name=xtreemfs-osd state=started enabled=yes
-  when: xtreemfs_role == "server"
-
-- name: install xfreemfs-client
-  yum: name=xtreemfs-client state=present
-  when: xtreemfs_role == "client"
-
-- name: install xfreemfs-tools
-  yum: name=xtreemfs-tools state=present
-  when: xtreemfs_role == "client"
+- include: main-RedHat.yml
+  when: ansible_os_family == "RedHat"
+- include: main-Debian.yml
+  when: ansible_os_family == "Debian"

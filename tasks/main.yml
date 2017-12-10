@@ -5,3 +5,7 @@
   when: ansible_os_family == "RedHat"
 - include: main-Debian.yml
   when: ansible_os_family == "Debian"
+- shell: mkfs.xtreemfs {{tinc_ip}}/web
+  with_items: xtreemfs_volumes
+  failed_when: False
+  when: xtreemfs_role == "server"

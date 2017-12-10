@@ -2,13 +2,13 @@
 # tasks file for ansible-xfreemfs-client
 
 - name: install the xfreemfs repo
-  apt_repository: repo="deb-src http://download.opensuse.org/repositories/home:/xtreemfs/Debian_8.0/ ./" state=present
+  apt_repository: repo="deb http://download.opensuse.org/repositories/home:/xtreemfs/Debian_8.0/ ./" state=present
 
 - name: "install gpg key"
-  apt_key: url=http://download.opensuse.org/repositories/home:/xtreemfs/xUbuntu_16.04/Release.key
+  apt_key: id=07D6EA4F2FA7E736 url=http://download.opensuse.org/repositories/home:/xtreemfs/xUbuntu_16.04/Release.key
 
 - name: install xfreemfs-server
-  yum: name=xtreemfs-server state=present
+  apt: name=xtreemfs-server state=present
   when: xtreemfs_role == "server"
 
 - name: start and enable xtreemfs-dir
@@ -23,10 +23,10 @@
   service: name=xtreemfs-osd state=started enabled=yes
   when: xtreemfs_role == "server"
 
-- name: install xfreemfs-client
-  yum: name=xtreemfs-client state=present
+- name: install xtreemfs-client
+  apt: name=xtreemfs-client state=present
   when: xtreemfs_role == "client"
 
-- name: install xfreemfs-tools
-  yum: name=xtreemfs-tools state=present
+- name: install xtreemfs-tools
+  apt: name=xtreemfs-tools state=present
   when: xtreemfs_role == "client"
